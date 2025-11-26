@@ -1,24 +1,29 @@
-const toggle = document.getElementById('theme-toggle');
+// Menu toggle
+const menuToggle = document.getElementById("menu-toggle");
+const navbarMenu = document.getElementById("navbar-menu");
 
-
-toggle.addEventListener('change', () => {
-    if (toggle.checked) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('theme', 'dark');
-    } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-        localStorage.setItem('theme', 'light');
-    }
+menuToggle.addEventListener("click", () => {
+  navbarMenu.classList.toggle("active");
 });
-function toggleRead() {
-  const moreContent = document.getElementById('more-content');
-  const readBtn = document.getElementById('read-btn');
 
-  if (moreContent.style.display === 'none' || moreContent.style.display === '') {
-    moreContent.style.display = 'block';
-    readBtn.textContent = 'Read less';
-  } else {
-    moreContent.style.display = 'none';
-    readBtn.textContent = 'Read more';
-  }
+// Theme toggle
+const themeToggle = document.getElementById("theme-toggle");
+const root = document.documentElement;
+
+// Load saved theme or system preference
+const savedTheme = localStorage.getItem("portfolio_theme");
+if (savedTheme) {
+  root.setAttribute("data-theme", savedTheme);
+  themeToggle.checked = savedTheme === "dark";
+} else {
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  root.setAttribute("data-theme", prefersDark ? "dark" : "light");
+  themeToggle.checked = prefersDark;
 }
+
+// Toggle theme on checkbox change
+themeToggle.addEventListener("change", () => {
+  const theme = themeToggle.checked ? "dark" : "light";
+  root.setAttribute("data-theme", theme);
+  localStorage.setItem("portfolio_theme", theme);
+});
